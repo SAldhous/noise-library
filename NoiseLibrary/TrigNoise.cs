@@ -12,6 +12,7 @@ namespace NoiseLibrary
 
         private static List<double>[] constants = new List<double>[4];
         private static List<double>[] mults = new List<double>[4];
+        private static List<int>[] functionType = new List<int>[4];
 
         private static int octaves;
 
@@ -25,16 +26,19 @@ namespace NoiseLibrary
 
             constants = new List<double>[4];
             mults = new List<double>[4];
+            functionType = new List<int>[4];
 
             for (int i = 0; i < constants.Length; i++)
             {
                 constants[i] = new List<double>();
                 mults[i] = new List<double>();
+                functionType[i] = new List<int>();
 
                 for (int j = 0; j < octaves; j++)
                 {
                     constants[i].Add(RNG.NextDouble() * 2 * Math.PI);
-                    mults[i].Add(0.1 + (RNG.NextDouble() * 20.0));
+                    mults[i].Add(0.5 + (RNG.NextDouble() * 40.0));
+                    functionType[i].Add(RNG.Next(0, 2));
                 }
             }
         }
@@ -49,7 +53,7 @@ namespace NoiseLibrary
 
             for (int i = 0; i < octaves; i++)
             {
-                val += Noise(x * frequency, y * frequency, i) * amplitude;
+                val += Noise(new double[2]{x * frequency, y * frequency}, i) * amplitude;
                 maxVal += amplitude;
 
                 amplitude *= persistence;
@@ -68,7 +72,7 @@ namespace NoiseLibrary
 
             for (int i = 0; i < octaves; i++)
             {
-                val += Noise(x * frequency, y * frequency, i) * amplitude;
+                val += Noise(new double[3]{x * frequency, y * frequency, z * frequency}, i) * amplitude;
                 maxVal += amplitude;
 
                 amplitude *= persistence;
@@ -87,7 +91,7 @@ namespace NoiseLibrary
 
             for (int i = 0; i < octaves; i++)
             {
-                val += Noise(x * frequency, y * frequency, i) * amplitude;
+                val += Noise(new double[4]{x * frequency, y * frequency, z * frequency, w * frequency}, i) * amplitude;
                 maxVal += amplitude;
 
                 amplitude *= persistence;
@@ -98,21 +102,25 @@ namespace NoiseLibrary
         }
 
         // Evaluate axes with respect to input axes
-        // Fade function used to stop the results of multiple axes trending towards 0 too easily
-        public static double Noise(double x, double y, int octave)
+        public static double Noise(double[] components, int octave)
         {
-            double xVal = Math.Sin((x * mults[0][octave]) + constants[0][octave]);
-            double yVal = Math.Sin((y * mults[1][octave]) + constants[1][octave]);
+            double val = 0.0;
 
-            return Fade((xVal + yVal) / 2.0);
+            for (int i = 0; i < components.Length; i++)
+            {
+                if (functionType[i][octave] == 0) val += Math.Sin((components[i] * mults[i][octave]) + constants[i][octave]);
+                else val += Math.Cos((components[i] * mults[i][octave]) + constants[i][octave]);
+            }
+
+            return val / components.Length;
         }
-        public static double Noise(double x, double y, double z, int octave)
+        /*public static double Noise(double x, double y, double z, int octave)
         {
             double xVal = Math.Sin((x * mults[0][octave]) + constants[0][octave]);
             double yVal = Math.Sin((y * mults[1][octave]) + constants[1][octave]);
             double zVal = Math.Sin((z * mults[2][octave]) + constants[2][octave]);
 
-            return Fade((xVal + yVal + zVal) / 3.0);
+            return (xVal + yVal + zVal) / 3.0;
         }
         public static double Noise(double x, double y, double z, double w, int octave)
         {
@@ -121,8 +129,8 @@ namespace NoiseLibrary
             double zVal = Math.Sin((z * mults[2][octave]) + constants[2][octave]);
             double wVal = Math.Sin((w * mults[3][octave]) + constants[3][octave]);
 
-            return Fade((xVal + yVal + zVal + wVal) / 4.0);
-        }
+            return (xVal + yVal + zVal + wVal) / 4.0;
+        }*/
 
         // Taken from Adrian's Soapbox at https://adrianb.io/2014/08/09/perlinnoise.html
         public static double Fade(double t)
