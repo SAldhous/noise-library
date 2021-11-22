@@ -37,18 +37,18 @@ namespace NoiseLibrary
     public class SimplexNoise
     {  
         // Simplex noise in 2D, 3D and 4D
-        private static Vector3[] grad3 = {new Vector3(1,1,0),new Vector3(-1,1,0),new Vector3(1,-1,0),new Vector3(-1,-1,0),
-                                 new Vector3(1,0,1),new Vector3(-1,0,1),new Vector3(1,0,-1),new Vector3(-1,0,-1),
-                                 new Vector3(0,1,1),new Vector3(0,-1,1),new Vector3(0,1,-1),new Vector3(0,-1,-1)};
+        private static Vector<double>[] grad3 = {new Vector<double>(new double[4] { 1,1,0,0 }),new Vector<double>(new double[4] { -1,1,0,0 }),new Vector<double>(new double[4] { 1,-1,0,0 }),new Vector<double>(new double[4] { -1,-1,0,0 }),
+                                 new Vector<double>(new double[4] { 1,0,1,0 }),new Vector<double>(new double[4] { -1,0,1,0 }),new Vector<double>(new double[4] { 1,0,-1,0 }),new Vector<double>(new double[4] { -1,0,-1,0 }),
+                                 new Vector<double>(new double[4] { 0,1,1,0 }),new Vector<double>(new double[4] { 0,-1,1,0 }),new Vector<double>(new double[4] { 0,1,-1,0 }),new Vector<double>(new double[4] { 0,-1,-1,0 })};
 
-        private static Vector4[] grad4 = {new Vector4(0,1,1,1),new Vector4(0,1,1,-1),new Vector4(0,1,-1,1),new Vector4(0,1,-1,-1),
-                   new Vector4(0,-1,1,1),new Vector4(0,-1,1,-1),new Vector4(0,-1,-1,1),new Vector4(0,-1,-1,-1),
-                   new Vector4(1,0,1,1),new Vector4(1,0,1,-1),new Vector4(1,0,-1,1),new Vector4(1,0,-1,-1),
-                   new Vector4(-1,0,1,1),new Vector4(-1,0,1,-1),new Vector4(-1,0,-1,1),new Vector4(-1,0,-1,-1),
-                   new Vector4(1,1,0,1),new Vector4(1,1,0,-1),new Vector4(1,-1,0,1),new Vector4(1,-1,0,-1),
-                   new Vector4(-1,1,0,1),new Vector4(-1,1,0,-1),new Vector4(-1,-1,0,1),new Vector4(-1,-1,0,-1),
-                   new Vector4(1,1,1,0),new Vector4(1,1,-1,0),new Vector4(1,-1,1,0),new Vector4(1,-1,-1,0),
-                   new Vector4(-1,1,1,0),new Vector4(-1,1,-1,0),new Vector4(-1,-1,1,0),new Vector4(-1,-1,-1,0)};
+        private static Vector<double>[] grad4 = {new Vector<double>(new double[4] { 0,1,1,1 }),new Vector<double>(new double[4] { 0,1,1,-1 }),new Vector<double>(new double[4] { 0,1,-1,1 }),new Vector<double>(new double[4] { 0,1,-1,-1 }),
+                   new Vector<double>(new double[4]{ 0,-1,1,1 }),new Vector<double>(new double[4] { 0,-1,1,-1 }),new Vector<double>(new double[4] { 0,-1,-1,1 }),new Vector<double>(new double[4] { 0,-1,-1,-1 }),
+                   new Vector<double>(new double[4]{ 1,0,1,1  }),new Vector<double>(new double[4] { 1,0,1,-1  }),new Vector<double>(new double[4] { 1,0,-1,1  }),new Vector<double>(new double[4] { 1,0,-1,-1  }),
+                   new Vector<double>(new double[4]{ -1,0,1,1 }),new Vector<double>(new double[4] { -1,0,1,-1 }),new Vector<double>(new double[4] { -1,0,-1,1 }),new Vector<double>(new double[4] { -1,0,-1,-1 }),
+                   new Vector<double>(new double[4]{ 1,1,0,1  }),new Vector<double>(new double[4] { 1,1,0,-1  }),new Vector<double>(new double[4] { 1,-1,0,1  }),new Vector<double>(new double[4] { 1,-1,0,-1  }),
+                   new Vector<double>(new double[4]{ -1,1,0,1 }),new Vector<double>(new double[4] { -1,1,0,-1 }),new Vector<double>(new double[4] { -1,-1,0,1 }),new Vector<double>(new double[4] { -1,-1,0,-1 }),
+                   new Vector<double>(new double[4]{ 1,1,1,0  }),new Vector<double>(new double[4] { 1,1,-1,0  }),new Vector<double>(new double[4] { 1,-1,1,0  }),new Vector<double>(new double[4] { 1,-1,-1,0  }),
+                   new Vector<double>(new double[4]{ -1,1,1,0 }),new Vector<double>(new double[4] { -1,1,-1,0 }),new Vector<double>(new double[4] { -1,-1,1,0 }),new Vector<double>(new double[4] { -1,-1,-1,0 })};
 
         private static short[] p = {151,160,137,91,90,15,
         131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
@@ -91,17 +91,17 @@ namespace NoiseLibrary
             return x < xi ? xi - 1 : xi;
         }
 
-        private static double Dot(Vector2 g, double x, double y)
+        private static double Dot(Vector<double> g, double x, double y)
         {
-            return g.X * x + g.Y * y;
+            return g[0] * x + g[1] * y;
         }
-        private static double Dot(Vector3 g, double x, double y, double z)
+        private static double Dot(Vector<double> g, double x, double y, double z)
         {
-            return g.X * x + g.Y * y + g.Z * z;
+            return g[0] * x + g[1] * y + g[2] * z;
         }
-        private static double Dot(Vector4 g, double x, double y, double z, double w)
+        private static double Dot(Vector<double> g, double x, double y, double z, double w)
         {
-            return g.X * x + g.Y * y + g.Z * z + g.W * w;
+            return g[0] * x + g[1] * y + g[2] * z + g[3] * w;
         }
 
         public static double Evaluate(double x, double y, int octaves, double persistence, double initialFreq)
@@ -200,24 +200,21 @@ namespace NoiseLibrary
             else
             {
                 t0 *= t0;
-                Vector3 grad3D = grad3[gi0];
-                n0 = t0 * t0 * Dot(new Vector2(grad3D.X, grad3D.Y), x0, y0);  // (x,y) of grad3 used for 2D gradient
+                n0 = t0 * t0 * Dot(grad3[gi0], x0, y0);  // (x,y) of grad3 used for 2D gradient
             }
             double t1 = 0.5 - x1 * x1 - y1 * y1;
             if (t1 < 0) n1 = 0.0;
             else
             {
                 t1 *= t1;
-                Vector3 grad3D = grad3[gi1];
-                n1 = t1 * t1 * Dot(new Vector2(grad3D.X, grad3D.Y), x1, y1);
+                n1 = t1 * t1 * Dot(grad3[gi1], x1, y1);
             }
             double t2 = 0.5 - x2 * x2 - y2 * y2;
             if (t2 < 0) n2 = 0.0;
             else
             {
                 t2 *= t2;
-                Vector3 grad3D = grad3[gi2];
-                n2 = t2 * t2 * Dot(new Vector2(grad3D.X, grad3D.Y), x2, y2);
+                n2 = t2 * t2 * Dot(grad3[gi2], x2, y2);
             }
             // Add contributions from each corner to get the final noise value.
             // The result is scaled to return values in the interval [-1,1].
