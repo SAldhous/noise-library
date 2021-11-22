@@ -10,12 +10,15 @@ namespace NoiseLibrary
     public class TrigNoise
     {
         private static Random RNG = new Random();
-
+        
+        // Array indices correspond to each axis X, Y, Z, and W
         private static List<double>[] constants = new List<double>[4];
         private static List<double>[] mults = new List<double>[4];
         private static List<double>[] amplitudes = new List<double>[4];
         private static List<int>[] signs = new List<int>[4];
         private static List<int>[] functionType = new List<int>[4];
+
+        // Frequencies for each octave
         private static List<double> frequencies = new List<double>();
 
         private static int octaves;
@@ -62,7 +65,8 @@ namespace NoiseLibrary
                 }
             }
         }
-
+        
+        // Evaluate noise at (x, y) for all octaves specified starting at defined frequency
         public static double Evaluate(double x, double y, double persistence, double initialFreq)
         {
             double frequency = initialFreq;

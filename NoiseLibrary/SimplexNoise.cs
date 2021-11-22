@@ -25,11 +25,11 @@ namespace NoiseLibrary
      * 
      * I understand the core concept of how simplex noise works, but understanding how to implement it mathematically is another matter.....
      * 
-     * Very much appreciated it is Mr Gustavson!
+     * Very much appreciated it is Dr Gustavson!
      * 
-     * Ported over from Java to C# and added functions to evaluate multiple octaves
+     * I only ported over from Java to C# and added functions to evaluate multiple octaves. The comments and function of the code is otherwise untouched.
      * 
-     * Original article by Stefan Gustavson -> https://www.researchgate.net/publication/216813608_Simplex_noise_demystified
+     * Original article by Dr Stefan Gustavson -> https://www.researchgate.net/publication/216813608_Simplex_noise_demystified
      * Original code file here -> http://www.itn.liu.se/~stegu/simplexnoise/SimplexNoise.java
      *
      */

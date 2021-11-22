@@ -5,12 +5,19 @@ using System.Numerics;
 
 namespace NoiseLibrary
 {
+    /// <summary>
+    /// The way this worley noise algorithm works is by take the sample point and working out what cell it belongs to in order to find the worley points of the surrounding cells.
+    /// The worley point for each cell is determined by a hash value, created by bitwise operations on the coordinates of the cell and added together. A modulus operation is performed
+    /// on the total sum of the bitwise operations. The final result is an index value for which point to use. The noise function then returns the square route (performed at return)
+    /// of the shortest distance.
+    /// </summary>
     public class WorleyNoise
     {
         private static Random RNG = new Random();
 
         private static Vector<double>[] grad4 = new Vector<double>[32];
 
+        // Array of perminations
         private static short[] p = {151,160,137,91,90,15,
         131,13,201,95,96,53,194,233,7,225,140,36,103,30,69,142,8,99,37,240,21,10,23,
         190, 6,148,247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,57,177,33,
@@ -28,6 +35,9 @@ namespace NoiseLibrary
         private static short[] perm = new short[512];
         private static short[] permMod12 = new short[512];
 
+        // Initiate the noise but creating random vectors for cells
+        // The hash table tells the algorithm which point to use for a given cell
+        // The hash values are naively obtained using bitwise operators and take a modulus of the sum of thos operations
         public static void Init()
         {
             for (int i = 0; i < 512; i++)
